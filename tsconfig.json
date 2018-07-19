@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": false,
+    "target": "es6",
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": [
+      "es2015",
+      "es6"
+    ]
+  }
+}
