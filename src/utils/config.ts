@@ -3,7 +3,7 @@ import lodashId from 'lodash-id'
 import * as FileSync from 'lowdb/adapters/FileSync'
 
 interface Option {
-  propName: string
+  name: string
   value: any
 }
 
@@ -23,7 +23,7 @@ const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
 
 const setConfig = (configPath: string, option: Option) => {
   const db = getConfig(configPath)
-  return db.read().set(option.propName, option.value).write()
+  return db.read().set(option.name, option.value).write()
 }
 
 export {
