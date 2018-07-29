@@ -38,17 +38,17 @@ class Lifecycle extends EventEmitter {
   }
   async beforeTransform (ctx: PicGo) {
     this.ctx.emit('beforeTransfrom', ctx)
-    this.handlePlugins(this.beforeTransformPlugins, ctx)
+    this.handlePlugins(ctx.helper.beforeTransformPlugins.getList(), ctx)
     return ctx
   }
   async beforeUpload (ctx: PicGo) {
     this.ctx.emit('beforeUpload', ctx)
-    this.handlePlugins(this.beforeUploadPlugins, ctx)
+    this.handlePlugins(ctx.helper.beforeUploadPlugins.getList(), ctx)
     return ctx
   }
   async afterUpload (ctx: PicGo) {
     this.ctx.emit('afterUpload', ctx)
-    this.handlePlugins(this.afterUploadPlugins, ctx)
+    this.handlePlugins(ctx.helper.afterUploadPlugins.getList(), ctx)
     this.ctx.emit('finished', ctx)
     return ctx
   }
