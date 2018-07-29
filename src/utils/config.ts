@@ -16,7 +16,7 @@ const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
   return db
 }
 
-const setConfig = (configPath: string, config) => {
+const saveConfig = (configPath: string, config) => {
   const db = getConfig(configPath)
   Object.keys(config).forEach(name => {
     db.read().set(name, config[name]).write()
@@ -25,5 +25,5 @@ const setConfig = (configPath: string, config) => {
 
 export {
   getConfig,
-  setConfig
+  saveConfig
 }

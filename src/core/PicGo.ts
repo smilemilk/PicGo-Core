@@ -7,7 +7,7 @@ import Uploader from '../lib/Uploader'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
-import { setConfig } from '../utils/config'
+import { saveConfig } from '../utils/config'
 
 interface Helper {
   transformer: Transformer
@@ -75,7 +75,8 @@ class PicGo extends EventEmitter {
 
   // save to db
   saveConfig (config) {
-    setConfig(this.configPath, config)
+    saveConfig(this.configPath, config)
+    this.setConfig(config)
   }
 
   // set for ctx
