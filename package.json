@@ -22,6 +22,7 @@
     "@types/image-size": "^0.0.29",
     "@types/lowdb": "^1.0.4",
     "@types/node": "^10.5.2",
+    "@types/request-promise-native": "^1.0.15",
     "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
@@ -37,6 +38,8 @@
     "fs-extra": "^6.0.1",
     "image-size": "^0.6.3",
     "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5"
   }
 }

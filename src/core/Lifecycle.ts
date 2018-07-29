@@ -1,68 +1,70 @@
 import { EventEmitter } from 'events'
 import { getConfig } from '../utils/config'
+import PicGo from './PicGo'
 
 interface Plugin {
-  handle (ctx): Promise<any>
-}
-
-interface Context {
-  picBed: object
-  uploadThing: any
-  [propName: string]: any
+  handle (ctx: PicGo): Promise<any>
 }
 
 class Lifecycle extends EventEmitter {
   beforeTransformPlugins: Array<Plugin>
   beforeUploadPlugins: Array<Plugin>
   afterUploadPlugins: Array<Plugin>
-  transformer: Plugin
-  uploader: Plugin
+  transformer: Function
+  uploader: Function
   configPath: string
+  ctx: PicGo
 
-  constructor (configPath: string) {
+  constructor (ctx: PicGo) {
     super()
-    this.configPath = configPath
+    this.ctx = ctx
   }
-  async start (uploadThing: any) {
-    const config = getConfig(this.configPath).read().get('picBed').value()
-    config.uploadThing = uploadThing
-    const ctx = config
+
+  async start (input: Array<any>) {
+    // init Config
+    const config = getConfig(this.ctx.configPath).read().get('picBed').value()
+    this.ctx.config = config
+    this.ctx.input = input
     try {
-      await this.beforeTransform(ctx)
-      await this.doTransform(ctx)
-      await this.beforeUpload(ctx)
-      await this.doUpload(ctx)
-      await this.afterUpload(ctx)
-      return ctx
+      await this.beforeTransform(this.ctx)
+      await this.doTransform(this.ctx)
+      await this.beforeUpload(this.ctx)
+      await this.doUpload(this.ctx)
+      await this.afterUpload(this.ctx)
+      return this.ctx
     } catch (e) {
       return Promise.reject(e)
     }
   }
-  async beforeTransform (ctx: Context) {
-    this.emit('beforeTransfrom', ctx)
+  async beforeTransform (ctx: PicGo) {
+    this.ctx.emit('beforeTransfrom', ctx)
     this.handlePlugins(this.beforeTransformPlugins, ctx)
     return ctx
   }
-  async beforeUpload (ctx: Context) {
-    this.emit('beforeUpload', ctx)
+  async beforeUpload (ctx: PicGo) {
+    this.ctx.emit('beforeUpload', ctx)
     this.handlePlugins(this.beforeUploadPlugins, ctx)
     return ctx
   }
-  async afterUpload (ctx: Context) {
-    this.emit('afterUpload', ctx)
+  async afterUpload (ctx: PicGo) {
+    this.ctx.emit('afterUpload', ctx)
     this.handlePlugins(this.afterUploadPlugins, ctx)
-    this.emit('finished', ctx)
+    this.ctx.emit('finished', ctx)
     return ctx
   }
-  async doTransform (ctx: Context) {
-    await this.transformer.handle(ctx)
+  async doTransform (ctx: PicGo) {
+    let type = ctx.config.transformer || 'path'
+    let transformer = this.ctx.helper.transformer.get(type)
+    await transformer(ctx)
     return ctx
   }
-  async doUpload (ctx: Context) {
-    await this.uploader.handle(ctx)
+  async doUpload (ctx: PicGo) {
+    let type = ctx.config.current || 'smms'
+    let uploader = this.ctx.helper.uploader.get(type)
+    await uploader(ctx)
     return ctx
   }
-  async handlePlugins (plugins: Array<Plugin>, ctx: Context) {
+  async handlePlugins (plugins: Array<Plugin>, ctx: PicGo) {
     for (let i in plugins) {
       await plugins[i].handle(ctx)
     }

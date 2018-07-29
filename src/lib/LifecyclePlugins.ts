@@ -1,5 +1,11 @@
-class Uploader {
+class LifecyclePlugins {
   list: object
+  name: string
+
+  constructor (name: string) {
+    this.name = name
+    this.list = []
+  }
 
   register (name: string, fn: Function): void {
     if (!name) throw new TypeError('name is required!')
@@ -12,6 +18,10 @@ class Uploader {
   get (name: string) {
     return this.list[name]
   }
+
+  getList () {
+    return this.list
+  }
 }
 
-export default Uploader
+export default LifecyclePlugins
