@@ -7,6 +7,7 @@ import Uploader from '../lib/Uploader'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
+import { setConfig } from '../utils/config'
 
 interface Helper {
   transformer: Transformer
@@ -66,6 +67,22 @@ class PicGo extends EventEmitter {
     uploaders(this)
     transformers(this)
     this.lifecycle = new Lifecycle(this)
+  }
+
+  getConfig () {
+    return this.config
+  }
+
+  // save to db
+  saveConfig (config) {
+    setConfig(this.configPath, config)
+  }
+
+  // set for ctx
+  setConfig (config) {
+    Object.keys(config).forEach(name => {
+      this.config[name] = config[name]
+    })
   }
 
   async upload (uploadThing: any) {

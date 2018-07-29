@@ -2,11 +2,6 @@ import * as lowdb from 'lowdb'
 import lodashId from 'lodash-id'
 import * as FileSync from 'lowdb/adapters/FileSync'
 
-interface Option {
-  name: string
-  value: any
-}
-
 const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
   const adapter = new FileSync(configPath)
   const db = lowdb(adapter)
@@ -21,9 +16,11 @@ const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
   return db
 }
 
-const setConfig = (configPath: string, option: Option) => {
+const setConfig = (configPath: string, config) => {
   const db = getConfig(configPath)
-  return db.read().set(option.name, option.value).write()
+  Object.keys(config).forEach(name => {
+    db.read().set(name, config[name]).write()
+  })
 }
 
 export {
