@@ -1,5 +1,9 @@
 class Uploader {
-  list: object
+  list: {}
+
+  constructor () {
+    this.list = {}
+  }
 
   register (name: string, fn: Function): void {
     if (!name) throw new TypeError('name is required!')

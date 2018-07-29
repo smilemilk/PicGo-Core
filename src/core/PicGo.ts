@@ -33,8 +33,6 @@ class PicGo extends EventEmitter {
   configPath: string
   lifecycle: Lifecycle
   helper: Helper
-  transformer: Transformer
-  uploader: Uploader
   beforeTransformPlugins: LifecyclePlugins
   beforeUploadPlugins: LifecyclePlugins
   afterUploadPlugins: LifecyclePlugins
@@ -44,6 +42,8 @@ class PicGo extends EventEmitter {
   constructor (configPath: string = '') {
     super()
     this.configPath = configPath
+    this.output = []
+    this.input = []
     this.helper = {
       transformer: new Transformer(),
       uploader: new Uploader(),

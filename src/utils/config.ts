@@ -14,7 +14,7 @@ const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
 
   if (!db.has('picBed').value()) {
     db.set('picBed', {
-      current: 'weibo'
+      current: 'smms'
     }).write()
   }
 

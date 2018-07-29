@@ -33,6 +33,7 @@ const handle = async (ctx: PicGo) => {
       if (body.code === 'success') {
         delete imgList[i].base64Image
         imgList[i]['imgUrl'] = body.data.url
+        console.log(imgList[i])
       } else {
         ctx.emit('uploadProgress', -1)
         return new Error()

@@ -1,10 +1,10 @@
 class LifecyclePlugins {
-  list: object
+  list: {}
   name: string
 
   constructor (name: string) {
     this.name = name
-    this.list = []
+    this.list = {}
   }
 
   register (name: string, fn: Function): void {
