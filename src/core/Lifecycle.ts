@@ -59,7 +59,7 @@ class Lifecycle extends EventEmitter {
     return ctx
   }
   async doUpload (ctx: PicGo) {
-    let type = ctx.config.current || 'smms'
+    let type = ctx.config.uploader || ctx.config.current || 'smms'
     let uploader = this.ctx.helper.uploader.get(type)
     await uploader(ctx)
     return ctx
