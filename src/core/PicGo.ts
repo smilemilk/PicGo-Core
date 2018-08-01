@@ -1,9 +1,10 @@
-import Lifecycle from './Lifecycle'
+import * as fs from 'fs-extra'
+import * as path from 'path'
 import { EventEmitter } from 'events'
 import { homedir } from 'os'
-import * as fs from 'fs-extra'
 import Transformer from '../lib/Transformer'
 import Uploader from '../lib/Uploader'
+import Lifecycle from './Lifecycle'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
@@ -32,6 +33,7 @@ interface Config {
 
 class PicGo extends EventEmitter {
   configPath: string
+  baseDir: string
   lifecycle: Lifecycle
   helper: Helper
   beforeTransformPlugins: LifecyclePlugins
@@ -59,6 +61,7 @@ class PicGo extends EventEmitter {
     if (this.configPath === '') {
       this.configPath = homedir() + '/.picgo/config.json'
     }
+    this.baseDir = path.dirname(this.configPath)
     const exist = fs.pathExistsSync(this.configPath)
     if (!exist) {
       fs.ensureFileSync(`${this.configPath}`)

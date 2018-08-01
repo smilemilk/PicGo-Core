@@ -18,6 +18,7 @@
   "author": "Molunerfinn",
   "license": "MIT",
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.0",
     "@types/fs-extra": "^5.0.4",
     "@types/image-size": "^0.0.29",
     "@types/lowdb": "^1.0.4",
@@ -34,6 +35,7 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "cross-spawn": "^6.0.5",
     "dayjs": "^1.7.4",
     "fs-extra": "^6.0.1",
     "image-size": "^0.6.3",
