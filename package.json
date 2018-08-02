@@ -24,6 +24,7 @@
     "@types/lowdb": "^1.0.4",
     "@types/node": "^10.5.2",
     "@types/request-promise-native": "^1.0.15",
+    "@types/resolve": "^0.0.8",
     "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
