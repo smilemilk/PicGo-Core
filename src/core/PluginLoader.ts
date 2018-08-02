@@ -34,7 +34,7 @@ export default async (ctx: PicGo) => {
       return fs.existsSync(path)
     })
     for (let i in modules) {
-      require(modules[i]).handle(ctx)
+      require(modules[i])(ctx)
     }
   } catch (e) {
     throw new Error(e)
