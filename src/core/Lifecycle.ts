@@ -21,12 +21,13 @@ class Lifecycle extends EventEmitter {
   }
 
   async start (input: Array<any>) {
-    // init Config
     try {
+      // init Config
       const config = getConfig(this.ctx.configPath).read().get('picBed').value()
       this.ctx.config = config
+      // input
       if (!Array.isArray(input)) {
-        throw new Error('Upload thing must be an array.')
+        throw new Error('Input must be an array.')
       }
       this.ctx.input = input
 
@@ -50,11 +51,26 @@ class Lifecycle extends EventEmitter {
     this.handlePlugins(ctx.helper.beforeTransformPlugins.getList(), ctx)
     return ctx
   }
+  async doTransform (ctx: PicGo) {
+    this.ctx.emit('uploadProgress', 30)
+    this.ctx.log.info('Transforming...')
+    let type = ctx.config.transformer || 'path'
+    let transformer = this.ctx.helper.transformer.get(type)
+    await transformer(ctx)
+    return ctx
+  }
   async beforeUpload (ctx: PicGo) {
     this.ctx.emit('uploadProgress', 60)
     this.ctx.log.info('Before upload')
     this.ctx.emit('beforeUpload', ctx)
     this.handlePlugins(ctx.helper.beforeUploadPlugins.getList(), ctx)
+    return ctx
+  }
+  async doUpload (ctx: PicGo) {
+    this.ctx.log.info('Uploading...')
+    let type = ctx.config.uploader || ctx.config.current || 'smms'
+    let uploader = this.ctx.helper.uploader.get(type)
+    await uploader(ctx)
     return ctx
   }
   async afterUpload (ctx: PicGo) {
@@ -69,21 +85,7 @@ class Lifecycle extends EventEmitter {
     this.ctx.log.success(`\n${msg}`)
     return ctx
   }
-  async doTransform (ctx: PicGo) {
-    this.ctx.emit('uploadProgress', 30)
-    this.ctx.log.info('Transforming...')
-    let type = ctx.config.transformer || 'path'
-    let transformer = this.ctx.helper.transformer.get(type)
-    await transformer(ctx)
-    return ctx
-  }
-  async doUpload (ctx: PicGo) {
-    this.ctx.log.info('Uploading...')
-    let type = ctx.config.uploader || ctx.config.current || 'smms'
-    let uploader = this.ctx.helper.uploader.get(type)
-    await uploader(ctx)
-    return ctx
-  }
+
   async handlePlugins (plugins: Array<Plugin>, ctx: PicGo) {
     for (let i in plugins) {
       await plugins[i].handle(ctx)

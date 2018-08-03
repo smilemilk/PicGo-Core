@@ -70,8 +70,10 @@ class PicGo extends EventEmitter {
     if (!exist) {
       fs.ensureFileSync(`${this.configPath}`)
     }
-    // load self plugins
+
+    // load third-party plugins
     PluginLoader(this)
+    // load self plugins
     uploaders(this)
     transformers(this)
     this.lifecycle = new Lifecycle(this)
