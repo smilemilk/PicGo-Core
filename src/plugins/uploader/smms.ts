@@ -22,29 +22,20 @@ const postOptions = (fileName: string, imgBase64: string) => {
 }
 
 const handle = async (ctx: PicGo) => {
-  try {
-    ctx.emit('uploadProgress', 0)
-    const imgList = ctx.output
-    ctx.emit('uploadProgress', 30)
-    for (let i in imgList) {
-      const postConfig = postOptions(imgList[i].fileName, imgList[i].base64Image)
-      let body = await request(postConfig)
-      body = JSON.parse(body)
-      if (body.code === 'success') {
-        delete imgList[i].base64Image
-        imgList[i]['imgUrl'] = body.data.url
-        console.log(imgList[i])
-      } else {
-        ctx.emit('uploadProgress', -1)
-        return new Error()
-      }
+  const imgList = ctx.output
+  for (let i in imgList) {
+    const postConfig = postOptions(imgList[i].fileName, imgList[i].base64Image)
+    let body = await request(postConfig)
+    body = JSON.parse(body)
+    if (body.code === 'success') {
+      delete imgList[i].base64Image
+      imgList[i]['imgUrl'] = body.data.url
+    } else {
+      ctx.emit('uploadProgress', -1)
     }
-    ctx.emit('uploadProgress', 100)
-    return ctx
-  } catch (err) {
-    ctx.emit('uploadProgress', -1)
-    throw new Error(err)
   }
+  ctx.emit('uploadProgress', 100)
+  return ctx
 }
 
 export default handle

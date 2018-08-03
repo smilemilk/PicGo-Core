@@ -4,7 +4,9 @@ import { EventEmitter } from 'events'
 import { homedir } from 'os'
 import Transformer from '../lib/Transformer'
 import Uploader from '../lib/Uploader'
+import Logger from './Logger'
 import Lifecycle from './Lifecycle'
+import PluginLoader from './PluginLoader'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
@@ -39,6 +41,7 @@ class PicGo extends EventEmitter {
   beforeTransformPlugins: LifecyclePlugins
   beforeUploadPlugins: LifecyclePlugins
   afterUploadPlugins: LifecyclePlugins
+  log: Logger
   config: Config
   output: Array<ImgInfo>
   input: Array<any>
@@ -54,6 +57,7 @@ class PicGo extends EventEmitter {
       beforeUploadPlugins: new LifecyclePlugins('beforeUploadPlugins'),
       afterUploadPlugins: new LifecyclePlugins('afterUploadPlugins')
     }
+    this.log = new Logger()
     this.init()
   }
 
@@ -67,6 +71,7 @@ class PicGo extends EventEmitter {
       fs.ensureFileSync(`${this.configPath}`)
     }
     // load self plugins
+    PluginLoader(this)
     uploaders(this)
     transformers(this)
     this.lifecycle = new Lifecycle(this)
