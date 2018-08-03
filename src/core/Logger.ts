@@ -11,7 +11,7 @@ class Logger {
     }
   }
   protected handleLog (type: string, msg: string | Error) {
-    let log = chalk[this.level[type]](`PicGo ${type.toUpperCase()}: `)
+    let log = chalk[this.level[type]](`[PicGo ${type.toUpperCase()}]: `)
     log += msg
     console.log(log)
   }
