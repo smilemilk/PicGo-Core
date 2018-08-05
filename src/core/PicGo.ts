@@ -96,8 +96,8 @@ class PicGo extends EventEmitter {
     })
   }
 
-  async upload (uploadThing: any) {
-    await this.lifecycle.start(uploadThing)
+  async upload (input: Array<any>) {
+    await this.lifecycle.start(input)
   }
 }
 

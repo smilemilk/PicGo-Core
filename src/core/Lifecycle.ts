@@ -7,11 +7,6 @@ interface Plugin {
 }
 
 class Lifecycle extends EventEmitter {
-  beforeTransformPlugins: Array<Plugin>
-  beforeUploadPlugins: Array<Plugin>
-  afterUploadPlugins: Array<Plugin>
-  transformer: Function
-  uploader: Function
   configPath: string
   ctx: PicGo
 
@@ -22,7 +17,7 @@ class Lifecycle extends EventEmitter {
 
   async start (input: Array<any>) {
     try {
-      // init Config
+      // init config
       const config = getConfig(this.ctx.configPath).read().get('picBed').value()
       this.ctx.config = config
       // input
@@ -75,8 +70,8 @@ class Lifecycle extends EventEmitter {
   }
   async afterUpload (ctx: PicGo) {
     this.ctx.emit('afterUpload', ctx)
-    this.handlePlugins(ctx.helper.afterUploadPlugins.getList(), ctx)
     this.ctx.emit('uploadProgress', 100)
+    this.handlePlugins(ctx.helper.afterUploadPlugins.getList(), ctx)
     this.ctx.emit('finished', ctx.output)
     let msg = ''
     for (let i in ctx.output) {
