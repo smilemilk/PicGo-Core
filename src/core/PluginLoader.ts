@@ -1,8 +1,8 @@
 import PicGo from './PicGo'
-import * as fs from 'fs-extra'
-import * as path from 'path'
-import * as spawn from 'cross-spawn'
-import * as resolve from 'resolve'
+import fs from 'fs-extra'
+import path from 'path'
+import spawn from 'cross-spawn'
+import resolve from 'resolve'
 
 const resolvePlugin = (ctx: PicGo, name: string) => {
   try {

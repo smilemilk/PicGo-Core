@@ -1,6 +1,6 @@
-import * as lowdb from 'lowdb'
+import lowdb from 'lowdb'
 import lodashId from 'lodash-id'
-import * as FileSync from 'lowdb/adapters/FileSync'
+import FileSync from 'lowdb/adapters/FileSync'
 
 const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
   const adapter = new FileSync(configPath)

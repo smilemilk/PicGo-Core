@@ -1,15 +1,18 @@
-import * as fs from 'fs-extra'
-import * as path from 'path'
+import fs from 'fs-extra'
+import path from 'path'
 import { EventEmitter } from 'events'
 import { homedir } from 'os'
 import Transformer from '../lib/Transformer'
 import Uploader from '../lib/Uploader'
+import Commander from '../lib/Commander'
 import Logger from './Logger'
 import Lifecycle from './Lifecycle'
-import PluginLoader from './PluginLoader'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
+// plugin loaders
+import PluginLoader from './PluginLoader'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
+import commanders from '../plugins/commander'
 import { saveConfig } from '../utils/config'
 
 interface Helper {
@@ -18,6 +21,7 @@ interface Helper {
   beforeTransformPlugins: LifecyclePlugins
   beforeUploadPlugins: LifecyclePlugins
   afterUploadPlugins: LifecyclePlugins
+  cmd: Commander
 }
 
 interface ImgInfo {
@@ -53,6 +57,7 @@ class PicGo extends EventEmitter {
     this.helper = {
       transformer: new Transformer(),
       uploader: new Uploader(),
+      cmd: new Commander(),
       beforeTransformPlugins: new LifecyclePlugins('beforeTransformPlugins'),
       beforeUploadPlugins: new LifecyclePlugins('beforeUploadPlugins'),
       afterUploadPlugins: new LifecyclePlugins('afterUploadPlugins')
@@ -76,6 +81,7 @@ class PicGo extends EventEmitter {
     // load self plugins
     uploaders(this)
     transformers(this)
+    commanders(this)
     this.lifecycle = new Lifecycle(this)
   }
 

@@ -15,7 +15,7 @@ class LifecyclePlugins {
 
   register (name: string, plugin: Plugin): void {
     if (!name) throw new TypeError('name is required!')
-    if (typeof plugin.handle !== 'function') throw new TypeError('fn must be a function!')
+    if (typeof plugin.handle !== 'function') throw new TypeError('plugin.handle must be a function!')
     if (this.list[name]) throw new TypeError('duplicate name!')
 
     this.list[name] = plugin

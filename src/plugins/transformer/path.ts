@@ -1,6 +1,6 @@
-import * as sizeOf from 'image-size'
-import * as path from 'path'
-import * as fs from 'fs-extra'
+import sizeOf from 'image-size'
+import path from 'path'
+import fs from 'fs-extra'
 import PicGo from '../../core/PicGo'
 
 interface ImgSize {

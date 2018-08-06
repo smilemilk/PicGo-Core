@@ -1,5 +1,5 @@
 import PicGo from '../../core/PicGo'
-import * as request from 'request-promise-native'
+import request from 'request-promise-native'
 
 const postOptions = (fileName: string, imgBase64: string) => {
   return {
