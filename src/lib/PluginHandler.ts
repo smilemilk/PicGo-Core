@@ -33,7 +33,7 @@ class PluginHandler {
     })
   }
   execCommand (cmd: string, modules: string[], where: string) {
-    const {registry, proxy} = this.ctx.config
+    const { registry, proxy } = this.ctx.config
     return new Promise((resolve, reject) => {
       let args = [cmd].concat(modules).concat('--color=always').concat('--save')
       if (registry) {
@@ -43,7 +43,7 @@ class PluginHandler {
         args = args.concat(`--proxy=${proxy}`)
       }
 
-      const npm = spawn('npm', args, {cwd: where})
+      const npm = spawn('npm', args, { cwd: where })
 
       let output = ''
       npm.stdout.on('data', (data) => {
@@ -56,9 +56,9 @@ class PluginHandler {
 
       npm.on('close', (code) => {
         if (!code) {
-          resolve({code: 0, data: output})
+          resolve({ code: 0, data: output })
         } else {
-          reject({code: code, data: output})
+          reject({ code: code, data: output })
         }
       })
     })
