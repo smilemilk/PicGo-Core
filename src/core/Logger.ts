@@ -10,26 +10,27 @@ class Logger {
       error: 'red'
     }
   }
-  protected handleLog (type: string, msg: string | Error) {
+  protected handleLog (type: string, msg: string | Error): string | Error {
     let log = chalk[this.level[type]](`[PicGo ${type.toUpperCase()}]: `)
     log += msg
     console.log(log)
+    return msg
   }
 
   success (msg) {
-    this.handleLog('success', msg)
+    return this.handleLog('success', msg)
   }
 
   info (msg) {
-    this.handleLog('info', msg)
+    return this.handleLog('info', msg)
   }
 
   error (msg) {
-    this.handleLog('error', msg)
+    return this.handleLog('error', msg)
   }
 
   warn (msg) {
-    this.handleLog('warn', msg)
+    return this.handleLog('warn', msg)
   }
 }
 

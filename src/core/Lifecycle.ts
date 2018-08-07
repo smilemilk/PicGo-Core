@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import { getConfig } from '../utils/config'
 import PicGo from './PicGo'
+import PluginLoader from './PluginLoader'
 
 interface Plugin {
   handle (ctx: PicGo): Promise<any>
@@ -20,6 +21,8 @@ class Lifecycle extends EventEmitter {
       // init config
       const config = getConfig(this.ctx.configPath).read().get('picBed').value()
       this.ctx.config = config
+      // load third-party plugins
+      PluginLoader(this.ctx)
       // input
       if (!Array.isArray(input)) {
         throw new Error('Input must be an array.')

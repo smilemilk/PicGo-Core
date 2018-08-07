@@ -3,15 +3,27 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "target": "es6",
     "declaration": true,
-    "rootDir": "src",
     "outDir": "dist",
+    // It's shit.
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@core/*": ["core/*"],
+    //   "@lib/*": ["lib/*"],
+    //   "@plugins/*": ["plugins/*"],
+    //   "@utils/*": ["utils/*"]
+    // },
     "lib": [
       "es2015",
       "es6"
-    ],
-  }
+    ]
+  },
+  "include": [
+    "./src/**/*",
+    "./package.json"
+  ]
 }

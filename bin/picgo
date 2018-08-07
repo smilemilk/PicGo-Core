@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+const PicGo = require('../dist/src/index')
+const picgo = new PicGo()
+try {
+  picgo.helper.cmd.program.parse(process.argv)
+} catch (e) {
+  picgo.log.error(e)
+}

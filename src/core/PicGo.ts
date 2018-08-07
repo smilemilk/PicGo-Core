@@ -9,7 +9,6 @@ import Logger from './Logger'
 import Lifecycle from './Lifecycle'
 import LifecyclePlugins from '../lib/LifecyclePlugins'
 // plugin loaders
-import PluginLoader from './PluginLoader'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
 import commanders from '../plugins/commander'
@@ -40,7 +39,6 @@ interface Config {
 class PicGo extends EventEmitter {
   configPath: string
   baseDir: string
-  lifecycle: Lifecycle
   helper: Helper
   beforeTransformPlugins: LifecyclePlugins
   beforeUploadPlugins: LifecyclePlugins
@@ -49,6 +47,8 @@ class PicGo extends EventEmitter {
   config: Config
   output: Array<ImgInfo>
   input: Array<any>
+  private lifecycle: Lifecycle
+
   constructor (configPath: string = '') {
     super()
     this.configPath = configPath
@@ -57,7 +57,7 @@ class PicGo extends EventEmitter {
     this.helper = {
       transformer: new Transformer(),
       uploader: new Uploader(),
-      cmd: new Commander(),
+      cmd: new Commander(this),
       beforeTransformPlugins: new LifecyclePlugins('beforeTransformPlugins'),
       beforeUploadPlugins: new LifecyclePlugins('beforeUploadPlugins'),
       afterUploadPlugins: new LifecyclePlugins('afterUploadPlugins')
@@ -76,8 +76,6 @@ class PicGo extends EventEmitter {
       fs.ensureFileSync(`${this.configPath}`)
     }
 
-    // load third-party plugins
-    PluginLoader(this)
     // load self plugins
     uploaders(this)
     transformers(this)

@@ -7,7 +7,7 @@ export default {
     const cmd = ctx.helper.cmd
     cmd.program
       .command('install <plugins...>')
-      .description('Install picgo plugin')
+      .description('install picgo plugin')
       .alias('i')
       .action((plugins) => {
         console.log(plugins)

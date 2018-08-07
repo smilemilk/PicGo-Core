@@ -11,19 +11,19 @@ class Commander {
   list: {}
   program: typeof program
   inquirer: typeof inquirer
+  private ctx: PicGo
 
-  constructor () {
+  constructor (ctx: PicGo) {
     this.list = {}
     this.program = program
     this.inquirer = inquirer
+    this.ctx = ctx
+    this.init()
   }
 
   init () {
     this.program
       .version(pkg.version, '-v, --version')
-      .option('-c, --config <path>', 'Set config path', (config) => {
-        console.log(config)
-      })
   }
 
   register (name: string, plugin: Plugin) {
@@ -32,6 +32,7 @@ class Commander {
     if (this.list[name]) throw new TypeError('duplicate name!')
 
     this.list[name] = plugin
+    this.list[name].handle(this.ctx)
   }
 
   get (name: string) {
