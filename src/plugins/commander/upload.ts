@@ -10,8 +10,13 @@ export default {
       .description('upload, go go go')
       .arguments('<input...>')
       .alias('u')
-      .action((input) => {
-        console.log(input)
+      .action(async (input: string[]) => {
+        const inputList = input
+          .map(item => path.resolve(item))
+          .filter(item => {
+            return fs.existsSync(item)
+          })
+        await ctx.upload(inputList)
       })
   }
 }
