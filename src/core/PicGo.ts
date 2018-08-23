@@ -12,7 +12,8 @@ import LifecyclePlugins from '../lib/LifecyclePlugins'
 import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
 import commanders from '../plugins/commander'
-import { saveConfig } from '../utils/config'
+import { saveConfig, getConfig } from '../utils/config'
+import PluginLoader from './PluginLoader'
 
 interface Helper {
   transformer: Transformer
@@ -75,12 +76,22 @@ class PicGo extends EventEmitter {
     if (!exist) {
       fs.ensureFileSync(`${this.configPath}`)
     }
-
-    // load self plugins
-    uploaders(this)
-    transformers(this)
-    commanders(this)
-    this.lifecycle = new Lifecycle(this)
+    try {
+      // init config
+      const config = getConfig(this.configPath).read().get('picBed').value()
+      this.config = config
+      // load self plugins
+      uploaders(this)
+      transformers(this)
+      commanders(this)
+      // load third-party plugins
+      PluginLoader(this)
+      this.lifecycle = new Lifecycle(this)
+    } catch (e) {
+      this.emit('uploadProgress', -1)
+      this.log.error(e)
+      Promise.reject(e)
+    }
   }
 
   getConfig () {

@@ -5,4 +5,7 @@ try {
   picgo.helper.cmd.program.parse(process.argv)
 } catch (e) {
   picgo.log.error(e)
+  if (process.argv.some(item => item === '--debug')) {
+    Promise.reject(e)
+  }
 }

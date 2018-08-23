@@ -14,9 +14,17 @@ export default {
         const inputList = input
           .map(item => path.resolve(item))
           .filter(item => {
-            return fs.existsSync(item)
+            const exist = fs.existsSync(item)
+            if (!exist) {
+              ctx.log.warn(`${item} is not existed.`)
+            }
+            return exist
           })
-        await ctx.upload(inputList)
+        if (inputList.length > 0) {
+          await ctx.upload(inputList)
+        } else {
+          ctx.log.warn('No file to upload')
+        }
       })
   }
 }

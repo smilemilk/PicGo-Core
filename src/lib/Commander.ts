@@ -24,6 +24,9 @@ class Commander {
   init () {
     this.program
       .version(pkg.version, '-v, --version')
+      .option('-d, --debug', 'debug mode', () => {
+        this.ctx.config.debug = true
+      })
   }
 
   register (name: string, plugin: Plugin) {

@@ -14,7 +14,11 @@ class Uploader {
   }
 
   get (name: string) {
-    return this.list[name]
+    if (this.list[name]) {
+      return this.list[name]
+    } else {
+      throw new Error(`Can't find uploader - ${name}`)
+    }
   }
 }
 

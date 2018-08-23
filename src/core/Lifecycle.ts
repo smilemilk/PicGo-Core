@@ -1,7 +1,5 @@
 import { EventEmitter } from 'events'
-import { getConfig } from '../utils/config'
 import PicGo from './PicGo'
-import PluginLoader from './PluginLoader'
 
 interface Plugin {
   handle (ctx: PicGo): Promise<any>
@@ -18,11 +16,6 @@ class Lifecycle extends EventEmitter {
 
   async start (input: Array<any>) {
     try {
-      // init config
-      const config = getConfig(this.ctx.configPath).read().get('picBed').value()
-      this.ctx.config = config
-      // load third-party plugins
-      PluginLoader(this.ctx)
       // input
       if (!Array.isArray(input)) {
         throw new Error('Input must be an array.')
@@ -39,7 +32,9 @@ class Lifecycle extends EventEmitter {
     } catch (e) {
       this.ctx.emit('uploadProgress', -1)
       this.ctx.log.error(e)
-      Promise.reject(e)
+      if (this.ctx.config.debug) {
+        Promise.reject(e)
+      }
     }
   }
   async beforeTransform (ctx: PicGo) {

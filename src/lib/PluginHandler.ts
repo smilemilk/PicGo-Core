@@ -33,7 +33,9 @@ class PluginHandler {
     })
   }
   execCommand (cmd: string, modules: string[], where: string) {
-    const { registry, proxy } = this.ctx.config
+    console.log(this.ctx.config)
+    const registry = this.ctx.config.registry
+    const proxy = this.ctx.config.proxy
     return new Promise((resolve, reject) => {
       let args = [cmd].concat(modules).concat('--color=always').concat('--save')
       if (registry) {
