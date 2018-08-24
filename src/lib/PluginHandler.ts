@@ -33,7 +33,6 @@ class PluginHandler {
     })
   }
   execCommand (cmd: string, modules: string[], where: string) {
-    console.log(this.ctx.config)
     const registry = this.ctx.config.registry
     const proxy = this.ctx.config.proxy
     return new Promise((resolve, reject) => {
