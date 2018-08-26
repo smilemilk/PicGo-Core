@@ -1,5 +1,7 @@
 import PicGo from '../core/PicGo'
 import spawn from 'cross-spawn'
+import path from 'path'
+import fs from 'fs-extra'
 
 interface Result {
   code: string | number
@@ -11,7 +13,21 @@ class PluginHandler {
   ctx: PicGo
   constructor (ctx: PicGo) {
     this.ctx = ctx
+    this.init()
   }
+  init () {
+    const packagePath = path.join(this.ctx.baseDir, 'package.json')
+    if (!fs.existsSync(packagePath)) {
+      const pkg = {
+        name: 'picgo-plugins',
+        description: 'picgo-plugins',
+        repository: 'https://github.com/Molunerfinn/PicGo-Core',
+        license: 'MIT'
+      }
+      fs.writeFileSync(packagePath, JSON.stringify(pkg), 'utf8')
+    }
+  }
+
   install (plugins: string[]) {
     return this.execCommand('install', plugins, this.ctx.baseDir).then((result: Result) => {
       if (!result.code) {

@@ -1,7 +1,6 @@
 import PicGo from './PicGo'
 import fs from 'fs-extra'
 import path from 'path'
-import spawn from 'cross-spawn'
 import resolve from 'resolve'
 
 const resolvePlugin = (ctx: PicGo, name: string) => {
@@ -13,23 +12,13 @@ const resolvePlugin = (ctx: PicGo, name: string) => {
 }
 
 export default async (ctx: PicGo) => {
-  const packagePath = path.join(ctx.baseDir, 'package.json')
-  const pluginDir = path.join(ctx.baseDir, 'node_modules/')
+  const packagePath = path.join(this.ctx.baseDir, 'package.json')
   try {
-    if (!fs.existsSync(packagePath)) {
-      const pkg = {
-        name: 'picgo-plugins',
-        description: 'picgo-plugins',
-        repository: 'https://github.com/Molunerfinn/PicGo-Core',
-        license: 'MIT'
-      }
-      fs.writeFileSync(packagePath, JSON.stringify(pkg), 'utf8')
-      return false
-    }
+    // Thanks to hexo -> https://github.com/hexojs/hexo/blob/master/lib/hexo/load_plugins.js
+    const pluginDir = path.join(this.ctx.baseDir, 'node_modules/')
     if (!fs.existsSync(pluginDir)) {
       return false
     }
-    // Thanks to hexo -> https://github.com/hexojs/hexo/blob/master/lib/hexo/load_plugins.js
     const content = await fs.readFile(packagePath, 'utf-8')
     const json = JSON.parse(content)
     const deps = Object.keys(json.dependencies || {})
