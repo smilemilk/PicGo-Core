@@ -16,11 +16,17 @@ export default async (ctx: PicGo) => {
   const packagePath = path.join(ctx.baseDir, 'package.json')
   const pluginDir = path.join(ctx.baseDir, 'node_modules/')
   try {
-    if (!fs.existsSync(pluginDir)) {
+    if (!fs.existsSync(packagePath)) {
+      const pkg = {
+        name: 'picgo-plugins',
+        description: 'picgo-plugins',
+        repository: 'https://github.com/Molunerfinn/PicGo-Core',
+        license: 'MIT'
+      }
+      fs.writeFileSync(packagePath, JSON.stringify(pkg), 'utf8')
       return false
     }
-    if (!fs.existsSync(packagePath)) {
-      spawn.sync('npm', ['init', '-y'], { stdio: 'inherit' , cwd: ctx.baseDir })
+    if (!fs.existsSync(pluginDir)) {
       return false
     }
     // Thanks to hexo -> https://github.com/hexojs/hexo/blob/master/lib/hexo/load_plugins.js

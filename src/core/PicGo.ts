@@ -84,8 +84,6 @@ class PicGo extends EventEmitter {
       uploaders(this)
       transformers(this)
       commanders(this)
-      // load third-party plugins
-      PluginLoader(this)
       this.lifecycle = new Lifecycle(this)
     } catch (e) {
       this.emit('uploadProgress', -1)
@@ -112,6 +110,8 @@ class PicGo extends EventEmitter {
   }
 
   async upload (input: Array<any>) {
+    // load third-party plugins
+    PluginLoader(this)
     await this.lifecycle.start(input)
   }
 }
