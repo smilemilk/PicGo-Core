@@ -12,10 +12,10 @@ const resolvePlugin = (ctx: PicGo, name: string) => {
 }
 
 export default async (ctx: PicGo) => {
-  const packagePath = path.join(this.ctx.baseDir, 'package.json')
+  const packagePath = path.join(ctx.baseDir, 'package.json')
+  const pluginDir = path.join(ctx.baseDir, 'node_modules/')
   try {
     // Thanks to hexo -> https://github.com/hexojs/hexo/blob/master/lib/hexo/load_plugins.js
-    const pluginDir = path.join(this.ctx.baseDir, 'node_modules/')
     if (!fs.existsSync(pluginDir)) {
       return false
     }
@@ -29,7 +29,7 @@ export default async (ctx: PicGo) => {
       return fs.existsSync(path)
     })
     for (let i in modules) {
-      require(modules[i])(ctx)
+      require(pluginDir + modules[i])(ctx)
     }
   } catch (e) {
     throw new Error(e)

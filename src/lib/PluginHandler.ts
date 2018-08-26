@@ -31,7 +31,7 @@ class PluginHandler {
   install (plugins: string[]) {
     return this.execCommand('install', plugins, this.ctx.baseDir).then((result: Result) => {
       if (!result.code) {
-        this.ctx.log.info('插件安装成功')
+        this.ctx.log.success('插件安装成功')
       } else {
         const err = `插件安装失败，失败码为${result.code}，错误日志为${result.data}`
         this.ctx.log.error(err)
@@ -41,7 +41,7 @@ class PluginHandler {
   uninstall (plugins: string[]) {
     return this.execCommand('uninstall', plugins, this.ctx.baseDir).then((result: Result) => {
       if (!result.code) {
-        this.ctx.log.info('插件卸载成功')
+        this.ctx.log.success('插件卸载成功')
       } else {
         const err = `插件卸载失败，失败码为${result.code}，错误日志为${result.data}`
         this.ctx.log.error(err)
