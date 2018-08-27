@@ -2,8 +2,6 @@ import fs from 'fs-extra'
 import path from 'path'
 import { EventEmitter } from 'events'
 import { homedir } from 'os'
-import Transformer from '../lib/Transformer'
-import Uploader from '../lib/Uploader'
 import Commander from '../lib/Commander'
 import Logger from './Logger'
 import Lifecycle from './Lifecycle'
@@ -13,11 +11,11 @@ import uploaders from '../plugins/uploader'
 import transformers from '../plugins/transformer'
 import commanders from '../plugins/commander'
 import { saveConfig, getConfig } from '../utils/config'
-import PluginLoader from './PluginLoader'
+import PluginLoader from '../lib/PluginLoader'
 
 interface Helper {
-  transformer: Transformer
-  uploader: Uploader
+  transformer: LifecyclePlugins
+  uploader: LifecyclePlugins
   beforeTransformPlugins: LifecyclePlugins
   beforeUploadPlugins: LifecyclePlugins
   afterUploadPlugins: LifecyclePlugins
@@ -41,13 +39,11 @@ class PicGo extends EventEmitter {
   configPath: string
   baseDir: string
   helper: Helper
-  beforeTransformPlugins: LifecyclePlugins
-  beforeUploadPlugins: LifecyclePlugins
-  afterUploadPlugins: LifecyclePlugins
   log: Logger
   config: Config
   output: Array<ImgInfo>
   input: Array<any>
+  pluginLoader: PluginLoader
   private lifecycle: Lifecycle
 
   constructor (configPath: string = '') {
@@ -56,8 +52,8 @@ class PicGo extends EventEmitter {
     this.output = []
     this.input = []
     this.helper = {
-      transformer: new Transformer(),
-      uploader: new Uploader(),
+      transformer: new LifecyclePlugins('transformer'),
+      uploader: new LifecyclePlugins('uploader'),
       cmd: new Commander(this),
       beforeTransformPlugins: new LifecyclePlugins('beforeTransformPlugins'),
       beforeUploadPlugins: new LifecyclePlugins('beforeUploadPlugins'),
@@ -81,6 +77,7 @@ class PicGo extends EventEmitter {
       const config = getConfig(this.configPath).read().get('picBed').value()
       this.config = config
       // load self plugins
+      this.pluginLoader = new PluginLoader(this)
       uploaders(this)
       transformers(this)
       commanders(this)
@@ -111,7 +108,7 @@ class PicGo extends EventEmitter {
 
   async upload (input: Array<any>) {
     // load third-party plugins
-    PluginLoader(this)
+    this.pluginLoader.load()
     await this.lifecycle.start(input)
   }
 }

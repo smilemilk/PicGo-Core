@@ -49,7 +49,7 @@ class Lifecycle extends EventEmitter {
     this.ctx.log.info('Transforming...')
     let type = ctx.config.transformer || 'path'
     let transformer = this.ctx.helper.transformer.get(type)
-    await transformer(ctx)
+    await transformer.handle(ctx)
     return ctx
   }
   async beforeUpload (ctx: PicGo) {
@@ -63,7 +63,7 @@ class Lifecycle extends EventEmitter {
     this.ctx.log.info('Uploading...')
     let type = ctx.config.uploader || ctx.config.current || 'smms'
     let uploader = this.ctx.helper.uploader.get(type)
-    await uploader(ctx)
+    await uploader.handle(ctx)
     return ctx
   }
   async afterUpload (ctx: PicGo) {

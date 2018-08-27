@@ -6,9 +6,12 @@ export default {
   handle: (ctx: PicGo) => {
     const cmd = ctx.helper.cmd
     cmd.program
-      .command('set', 'set config of picgo')
+      .command('set')
+      .description('set config of picgo')
       .action(() => {
-        console.log(ctx)
+        // load third-party plugins
+        ctx.pluginLoader.load()
+        console.log(ctx.config)
       })
   }
 }

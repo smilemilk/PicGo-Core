@@ -12,6 +12,9 @@ const getConfig = (configPath: string): lowdb.LowdbSync<any> => {
       current: 'smms'
     }).write()
   }
+  if (!db.has('plugins').value()) {
+    db.set('plugins', {}).write()
+  }
 
   return db
 }

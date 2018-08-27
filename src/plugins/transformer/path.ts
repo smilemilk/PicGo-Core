@@ -26,4 +26,6 @@ const handle = async (ctx: PicGo) => {
   return ctx
 }
 
-export default handle
+export default {
+  handle
+}
