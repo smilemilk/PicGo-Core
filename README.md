@@ -1,5 +1,7 @@
 ## PicGo - Core
 
+![](https://raw.githubusercontent.com/Molunerfinn/test/master/picgo/picgo-core.jpg)
+
 A tool for picture uploading. Both CLI & api supports.
 
 Developing...
