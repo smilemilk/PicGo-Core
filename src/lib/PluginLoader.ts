@@ -39,10 +39,10 @@ class PluginLoader {
       })
       for (let i in modules) {
         this.list.push(modules[i])
-        if (!this.ctx.config.plugins[modules[i]]) {
+        if (this.ctx.config.plugins[modules[i]] || this.ctx.config.plugins[modules[i]] === undefined) {
           require(pluginDir + modules[i])(this.ctx)
-          const plugin = `plugin.${modules[i]}`
-          this.ctx.config.saveConfig(
+          const plugin = `plugins[${modules[i]}]`
+          this.ctx.saveConfig(
             {
               [plugin]: true
             }

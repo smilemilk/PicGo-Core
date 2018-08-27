@@ -74,7 +74,7 @@ class PicGo extends EventEmitter {
     }
     try {
       // init config
-      const config = getConfig(this.configPath).read().get('picBed').value()
+      const config = getConfig(this.configPath).read().value()
       this.config = config
       // load self plugins
       this.pluginLoader = new PluginLoader(this)
